@@ -1,0 +1,20 @@
+# Let Git normalise real text files, and keep its hands off binaries.
+# Without the binary rules below, Git's line-ending conversion can corrupt
+# the PDF and the JPEGs on checkout.
+* text=auto
+
+*.html  text
+*.css   text
+*.js    text
+*.json  text
+*.md    text
+*.ps1   text eol=crlf
+
+*.pdf   binary
+*.jpg   binary
+*.jpeg  binary
+*.png   binary
+*.webp  binary
+*.ico   binary
+*.mp4   binary
+*.woff2 binary

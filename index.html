@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+
+<title>Kit Anthony Z. Lebosada | Web &amp; Mobile Developer</title>
+<meta name="description" content="Portfolio of Kit Anthony Z. Lebosada, a web and mobile developer based in Cebu City, Philippines. Browser games, published mobile apps and web projects.">
+<meta name="author" content="Kit Anthony Z. Lebosada">
+<meta name="theme-color" content="#08080b">
+
+<!-- Open Graph / social sharing. Replace og:url with your deployed URL once
+     the site is live, and add assets/images/og-image.jpg (1200x630) if you
+     want a custom social preview card. -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="Kit Anthony Z. Lebosada | Web &amp; Mobile Developer">
+<meta property="og:description" content="Browser games, published mobile apps and web projects, built by a developer in Cebu City.">
+<meta property="og:image" content="assets/images/og-image.jpg">
+<meta name="twitter:card" content="summary_large_image">
+
+<!-- Inline SVG favicon: no extra file to deploy, no 404 in the console. -->
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%230a0a0f'/><text x='50' y='50' font-family='Georgia,serif' font-size='52' font-weight='700' fill='%2362e5ff' text-anchor='middle' dominant-baseline='central'>K</text></svg>">
+
+<!-- Fonts are an enhancement: if they fail to load the site falls back to
+     system serif/sans stacks declared in the CSS and nothing breaks. -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap">
+
+<link rel="stylesheet" href="css/style.css">
+
+<!-- Applies the saved theme before first paint so there is no flash of the
+     wrong colours. Kept inline and tiny on purpose. -->
+<script>
+  (function () {
+    try {
+      var saved = localStorage.getItem('portfolio-theme');
+      if (saved === 'light' || saved === 'dark') {
+        document.documentElement.setAttribute('data-theme', saved);
+      }
+    } catch (e) { /* private mode: keep the default dark theme */ }
+  })();
+</script>
+</head>
+
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+
+<!-- ===================== NAVIGATION ===================== -->
+<header class="nav" id="nav">
+  <div class="nav__inner">
+    <a class="nav__brand" href="#hero" aria-label="Back to top">
+      <span class="nav__mark" data-brand-initials>KL</span>
+      <span class="nav__brandtext" data-brand-name>Kit Anthony</span>
+    </a>
+
+    <nav class="nav__links" id="nav-links" aria-label="Main">
+      <a href="#about">About</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#resume">Resume</a>
+      <a href="#contact">Contact</a>
+      <span class="nav__indicator" aria-hidden="true"></span>
+    </nav>
+
+    <div class="nav__actions">
+      <!-- The one thing in the bar that asks for something. Hidden on small
+           screens, where the menu already carries a Contact link. -->
+      <a class="navcta" href="#contact">
+        Let’s talk
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg>
+      </a>
+
+      <button class="iconbtn" id="theme-toggle" type="button"
+              aria-label="Switch to light theme" aria-pressed="false">
+        <svg class="icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/>
+        </svg>
+        <svg class="icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="4.2"/>
+          <path d="M12 2v2.6M12 19.4V22M2 12h2.6M19.4 12H22M4.9 4.9l1.9 1.9M17.2 17.2l1.9 1.9M19.1 4.9l-1.9 1.9M6.8 17.2l-1.9 1.9"/>
+        </svg>
+      </button>
+
+      <button class="navtoggle" id="nav-toggle" type="button"
+              aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="nav__scrim" id="nav-scrim" hidden></div>
+
+<main id="main">
+
+  <!-- ===================== HERO ===================== -->
+  <section class="hero" id="hero">
+    <div class="hero__bg" aria-hidden="true">
+      <span class="orb orb--1"></span>
+      <span class="orb orb--2"></span>
+      <span class="hero__grid"></span>
+    </div>
+
+    <div class="wrap hero__inner">
+      <div class="hero__text">
+        <p class="hero__eyebrow reveal" data-reveal-delay="0">
+          <span class="dot"></span>
+          <span data-hero-location>Cebu City, Philippines</span>
+        </p>
+
+        <h1 class="hero__name reveal" data-reveal-delay="1" data-hero-name>
+          Kit Anthony Z. Lebosada
+        </h1>
+
+        <p class="hero__title reveal" data-reveal-delay="2" data-hero-title>
+          Web &amp; Mobile Developer
+        </p>
+
+        <p class="hero__headline reveal" data-reveal-delay="3" data-hero-headline></p>
+
+        <p class="hero__intro reveal" data-reveal-delay="4" data-hero-intro></p>
+
+        <div class="hero__actions reveal" data-reveal-delay="5">
+          <a class="btn btn--primary" href="#projects">
+            Explore My Work
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="btn btn--ghost" id="hero-cv" href="#resume">
+            Download My CV
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+          </a>
+          <a class="btn btn--quiet" href="#contact">Contact Me</a>
+        </div>
+
+        <ul class="hero__socials reveal" data-reveal-delay="6" data-socials aria-label="Social links"></ul>
+      </div>
+
+      <div class="hero__figure reveal" data-reveal-delay="3">
+        <div class="photo">
+          <div class="photo__glow" aria-hidden="true"></div>
+          <div class="photo__ring" aria-hidden="true"></div>
+          <div class="photo__frame" data-photo-frame>
+            <!-- script.js swaps in the real photo when the file exists,
+                 otherwise this monogram stays. -->
+            <span class="photo__mono" data-photo-mono>KL</span>
+          </div>
+
+          <!-- Availability card, filled from CONFIG.availabilityCard.
+               Removed entirely when that is null. -->
+          <aside class="availcard" data-availability-card hidden></aside>
+        </div>
+      </div>
+    </div>
+
+    <a class="scrollcue" href="#about" aria-label="Scroll to about section">
+      <span class="scrollcue__track"><span class="scrollcue__dot"></span></span>
+      <span class="scrollcue__label">Scroll</span>
+    </a>
+  </section>
+
+  <!-- ===================== ABOUT ===================== -->
+  <section class="section" id="about">
+    <div class="wrap">
+      <header class="sechead reveal">
+        <span class="sechead__num">01</span>
+        <h2 class="sechead__title">About</h2>
+        <p class="sechead__sub">Who is behind the work</p>
+      </header>
+
+      <div class="about">
+        <div class="about__body reveal" data-about-text></div>
+        <aside class="about__side reveal">
+          <ul class="statgrid" data-about-highlights></ul>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== PROJECTS ===================== -->
+  <section class="section section--alt" id="projects">
+    <div class="wrap">
+      <header class="sechead reveal">
+        <span class="sechead__num">02</span>
+        <h2 class="sechead__title">Selected Work</h2>
+        <p class="sechead__sub">Things I have built and shipped</p>
+      </header>
+
+      <div class="filters reveal" id="filters" role="group" aria-label="Filter projects by category"></div>
+
+      <!-- Featured projects render as full-width showcase rows. -->
+      <div class="featured" id="featured-projects"></div>
+
+      <!-- Everything else renders as cards. -->
+      <div class="pgrid" id="project-grid"></div>
+
+      <p class="emptystate" id="projects-empty" hidden>No projects in this category yet.</p>
+    </div>
+  </section>
+
+  <!-- ===================== SKILLS ===================== -->
+  <section class="section" id="skills">
+    <div class="wrap">
+      <header class="sechead reveal">
+        <span class="sechead__num">03</span>
+        <h2 class="sechead__title">Skills &amp; Tools</h2>
+        <p class="sechead__sub">What I work with</p>
+      </header>
+      <div class="skills" data-skills></div>
+    </div>
+  </section>
+
+  <!-- ===================== EXPERIENCE & EDUCATION ===================== -->
+  <section class="section section--alt" id="experience">
+    <div class="wrap">
+      <header class="sechead reveal">
+        <span class="sechead__num">04</span>
+        <h2 class="sechead__title">Experience &amp; Education</h2>
+        <p class="sechead__sub">Where I have been learning and working</p>
+      </header>
+
+      <div class="twocol">
+        <div>
+          <h3 class="colhead reveal">Experience</h3>
+          <ol class="timeline" data-experience></ol>
+        </div>
+        <div>
+          <h3 class="colhead reveal">Education</h3>
+          <ol class="timeline" data-education></ol>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== RESUME ===================== -->
+  <section class="section" id="resume">
+    <div class="wrap">
+      <header class="sechead reveal">
+        <span class="sechead__num">05</span>
+        <h2 class="sechead__title">Resume</h2>
+        <p class="sechead__sub">The short version, on paper</p>
+      </header>
+
+      <div class="resume reveal">
+        <div class="resume__text">
+          <h3>Take the full CV with you</h3>
+          <p>
+            My complete curriculum vitae, covering education, work experience
+            and skills, is available to read in your browser or download as a
+            PDF.
+          </p>
+          <p class="resume__meta">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/>
+              <path d="M14 3v5h5"/>
+            </svg>
+            <span>PDF document<span data-cv-size></span></span>
+          </p>
+
+          <div class="resume__actions">
+            <a class="btn btn--primary" id="cv-view" href="assets/cv/cv.pdf"
+               target="_blank" rel="noopener noreferrer">
+              View CV
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></svg>
+            </a>
+            <a class="btn btn--ghost" id="cv-download" href="assets/cv/cv.pdf" download>
+              Download CV
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 4v11M7 11l5 5 5-5M5 20h14"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div class="resume__preview" data-cv-preview>
+          <!-- An embedded preview is injected here on larger screens only;
+               mobile browsers handle inline PDFs poorly, so there they get
+               the buttons above instead. -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CONTACT ===================== -->
+  <section class="section section--alt" id="contact">
+    <div class="wrap">
+      <header class="sechead reveal">
+        <span class="sechead__num">06</span>
+        <h2 class="sechead__title" data-contact-heading>Let’s build something</h2>
+        <p class="sechead__sub" data-contact-blurb></p>
+      </header>
+
+      <div class="contact">
+        <div class="contact__direct reveal">
+          <a class="maillink" id="mail-link" href="#">
+            <span class="maillink__label">Email me directly</span>
+            <span class="maillink__value" data-email></span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+          <a class="maillink" id="phone-link" href="#" hidden>
+            <span class="maillink__label">Call or message</span>
+            <span class="maillink__value" data-phone></span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </a>
+
+          <ul class="contact__socials" data-socials aria-label="Social links"></ul>
+        </div>
+
+        <!-- This form opens the visitor's email client with the message
+             pre-filled. It is honest about being a static site: nothing is
+             silently sent anywhere, and no credentials are involved.
+             See README.md to wire up a real form service instead. -->
+        <form class="cform reveal" id="contact-form" novalidate>
+          <div class="cform__row">
+            <div class="field">
+              <label for="f-name">Name</label>
+              <input type="text" id="f-name" name="name" autocomplete="name" required>
+              <p class="field__error" id="err-name" aria-live="polite"></p>
+            </div>
+            <div class="field">
+              <label for="f-email">Email</label>
+              <input type="email" id="f-email" name="email" autocomplete="email" required>
+              <p class="field__error" id="err-email" aria-live="polite"></p>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="f-subject">Subject</label>
+            <input type="text" id="f-subject" name="subject" required>
+            <p class="field__error" id="err-subject" aria-live="polite"></p>
+          </div>
+
+          <div class="field">
+            <label for="f-message">Message</label>
+            <textarea id="f-message" name="message" rows="5" required></textarea>
+            <p class="field__error" id="err-message" aria-live="polite"></p>
+          </div>
+
+          <button class="btn btn--primary btn--full" type="submit">
+            Compose Email
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          </button>
+
+          <p class="cform__note">
+            This opens your own email app with the message ready to send.
+          </p>
+          <p class="cform__status" id="form-status" role="status" aria-live="polite"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="footer">
+  <div class="wrap footer__inner">
+    <div>
+      <p class="footer__name" data-brand-name>Kit Anthony</p>
+      <p class="footer__tag" data-footer-tagline></p>
+    </div>
+    <ul class="footer__socials" data-socials aria-label="Social links"></ul>
+    <p class="footer__copy">
+      &copy; <span id="year"></span> <span data-brand-fullname></span>
+    </p>
+  </div>
+</footer>
+
+<button class="totop" id="to-top" type="button" aria-label="Back to top" hidden>
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg>
+</button>
+
+<!-- Project detail dialog, filled in by script.js when a card is opened. -->
+<div class="modal" id="modal" hidden>
+  <div class="modal__scrim" data-close-modal></div>
+  <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <button class="modal__close" type="button" data-close-modal aria-label="Close">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+    <div class="modal__content" id="modal-content"></div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/projects.js"></script>
+<script src="js/script.js"></script>
+</body>
+</html>

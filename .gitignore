@@ -1,0 +1,17 @@
+# Windows / macOS junk
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+.DS_Store
+
+# Editor
+.vscode/
+*.code-workspace
+
+# Vercel
+.vercel/
+
+# Local scratch: drop originals or work-in-progress images here and they
+# stay off the repo.
+scratch/
+*.psd
