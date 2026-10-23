@@ -540,10 +540,12 @@
     }
     if (scrim) scrim.addEventListener('click', () => setMenu(false));
 
-    /* Close the menu after tapping a link. */
+    /* Close the menu after tapping a link, or the panel's own close button. */
     if (links) {
       links.addEventListener('click', event => {
-        if (event.target.closest('a')) setMenu(false);
+        if (event.target.closest('a') || event.target.closest('[data-close-menu]')) {
+          setMenu(false);
+        }
       });
     }
 
