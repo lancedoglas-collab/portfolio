@@ -96,7 +96,8 @@ const PROJECTS = [
       'A car showcase website built as a team project for a semi-finals ' +
         'defense. Visitors browse a catalogue of vehicles and read the ' +
         'features of each model, with an inquiry page for getting in touch ' +
-        'about one.',
+        'about one, and a partner brands section covering the marques the ' +
+        'site carries.',
       'It is a multi-page static site rather than a single landing page, ' +
         'built with plain HTML, CSS and JavaScript and deployed on Vercel.',
       'I handled the front end: the page layouts, the styling and the ' +
@@ -107,6 +108,7 @@ const PROJECTS = [
     year: null,
     role: 'Front-end developer: layout, styling and interface behaviour.',
     tech: ['HTML5', 'CSS3', 'JavaScript', 'Vercel'],
+    video: 'assets/video/shiftgear.mp4',
     image: 'assets/images/projects/shiftgear.jpg',
     imageAlt: 'ShiftGear home page: a car lit head-on under the headline “Drive into the Future”',
     mockup: 'browser',
@@ -140,6 +142,7 @@ const PROJECTS = [
     /* TODO — confirm the stack. PHP and MySQL are inferred from the host
        (InfinityFree runs PHP only); correct these if that is wrong. */
     tech: ['PHP', 'MySQL', 'HTML5', 'CSS3', 'JavaScript'],
+    video: 'assets/video/barangay-mambaling.mp4',
     image: 'assets/images/projects/barangay-mambaling.jpg',
     imageAlt: 'Home page of the Barangay Mambaling E-Service System',
     mockup: 'browser',
