@@ -74,6 +74,9 @@ const PROJECTS = [
       'SVG',
       'Vercel'
     ],
+    /* Swapped in over the image on wide screens, unless reduced motion is
+       requested. The image above stays as the poster and the fallback. */
+    video: 'assets/video/emberfall.mp4',
     image: 'assets/images/projects/emberfall.jpg',
     imageAlt: 'Emberfall title screen: a pixel-art castle at night beneath a crescent moon, with the game menu',
     mockup: 'browser',

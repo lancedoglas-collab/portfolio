@@ -20,6 +20,10 @@ $types = @{
   '.ico'  = 'image/x-icon'
   '.pdf'  = 'application/pdf'
   '.woff2'= 'font/woff2'
+  # Without a real video type the browser refuses to play the file.
+  '.mp4'  = 'video/mp4'
+  '.webm' = 'video/webm'
+  '.ogv'  = 'video/ogg'
 }
 
 $listener = New-Object System.Net.HttpListener

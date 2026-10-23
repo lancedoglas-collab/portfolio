@@ -1065,12 +1065,15 @@ button { font: inherit; color: inherit; cursor: pointer; }
   overflow: hidden;
   background: var(--surface-2);
 }
-.pmedia__shot img {
+.pmedia__shot img,
+.pmedia__shot video {
   width: 100%; height: 100%;
   object-fit: cover;
   transition: transform var(--t-slow) var(--ease);
 }
 .pcard:hover .pmedia__shot img,
+.pcard:hover .pmedia__shot video,
+.fproject:hover .pmedia__shot video,
 .fproject:hover .pmedia__shot img { transform: scale(1.05); }
 
 /* Overlay sheen on hover. */

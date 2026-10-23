@@ -264,7 +264,11 @@
   function mediaMarkup(project) {
     const inner = project.image
       ? '<img src="' + esc(project.image) + '" alt="' + esc(project.imageAlt || project.name) +
-        '" loading="lazy" decoding="async">'
+        '" loading="lazy" decoding="async"' +
+        /* The still is always what ships. upgradeVideos() swaps in the clip
+           afterwards, and only where it is wanted, so phones and people who
+           asked for less motion never download it. */
+        (project.video ? ' data-video="' + esc(project.video) + '"' : '') + '>'
       : '<div class="placeholder">' +
           '<span class="placeholder__text">' + esc(project.name.charAt(0)) + '</span>' +
           '<span class="placeholder__note">Screenshot coming soon</span>' +
@@ -382,7 +386,46 @@
 
     if (empty) empty.hidden = visible.length > 0;
 
+    upgradeVideos();
     observeReveals();
+  }
+
+  /**
+   * Replaces a project's still with a muted looping clip, but only on a
+   * screen wide enough to be worth the bytes and only when motion is
+   * welcome. The poster is the same image, so the card looks identical
+   * until the video has enough data to play, and identical forever if it
+   * never loads.
+   */
+  function upgradeVideos() {
+    if (prefersReducedMotion || window.innerWidth < 900) return;
+
+    $$('img[data-video]').forEach(img => {
+      const src = img.dataset.video;
+      const video = document.createElement('video');
+
+      video.src = src;
+      video.poster = img.getAttribute('src');
+      video.muted = true;
+      video.loop = true;
+      video.autoplay = true;
+      /* Without this iOS Safari takes the clip fullscreen on play. */
+      video.playsInline = true;
+      video.setAttribute('playsinline', '');
+      video.preload = 'metadata';
+      video.tabIndex = -1;
+      /* Decorative: the card's heading and tagline already name the project. */
+      video.setAttribute('aria-hidden', 'true');
+
+      /* Keep the still if the file is missing or the codec is refused. */
+      video.addEventListener('error', () => {
+        if (video.parentNode) video.parentNode.replaceChild(img, video);
+      }, { once: true });
+
+      img.parentNode.replaceChild(video, img);
+      const played = video.play();
+      if (played && played.catch) played.catch(() => { /* poster stays */ });
+    });
   }
 
   /** Builds filter buttons for categories that actually contain projects. */
