@@ -398,7 +398,15 @@
    * never loads.
    */
   function upgradeVideos() {
-    if (prefersReducedMotion || window.innerWidth < 900) return;
+    if (prefersReducedMotion) return;
+
+    /* The clip is small enough to send to a phone, but not to someone who
+       has asked their browser to save data or is on a slow connection.
+       Those visitors keep the still, which is a complete card on its own. */
+    const conn = navigator.connection ||
+                 navigator.mozConnection ||
+                 navigator.webkitConnection;
+    if (conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''))) return;
 
     $$('img[data-video]').forEach(img => {
       const src = img.dataset.video;
