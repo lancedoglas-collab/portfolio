@@ -89,6 +89,43 @@ const PROJECTS = [
   },
 
   {
+    id: 'findit',
+    name: 'FindIt',
+    tagline: 'A lost and found network for the Philippines. Report an item, search, get reunited.',
+    description: [
+      'A community lost-and-found platform covering Cebu, Manila, Davao and ' +
+        'twenty more cities. Someone who has lost a wallet, a set of keys or ' +
+        'a pet posts it in under two minutes; someone who has found one does ' +
+        'the same, and the site does the matching that would otherwise rely ' +
+        'on a barangay noticeboard or a Facebook group.',
+      'Items are filed across thirteen categories, from electronics and ' +
+        'documents to school items and pets, and can be searched by category, ' +
+        'location or keyword. When a match looks right the claimant submits ' +
+        'proof, the owner verifies it, and the two arrange a meetup through ' +
+        'the site rather than trading phone numbers in public.',
+      'Accounts, a running count of items posted and reunited, and a dark ' +
+        'and light theme. Built as a single page with no framework and no ' +
+        'build step.'
+    ],
+    category: 'Web Applications',
+    featured: true,
+    year: '2026',
+    role: 'Sole developer: interface, categories, search and claim flow.',
+    /* TODO: add whatever stores the items and accounts, e.g. Supabase. */
+    tech: ['HTML5', 'CSS3', 'JavaScript', 'Vercel'],
+    video: 'assets/video/findit.mp4',
+    image: 'assets/images/projects/findit.jpg',
+    imageAlt: 'FindIt home page: “Lost something? Find it here.” over report and search controls',
+    mockup: 'browser',
+    links: {
+      liveUrl: 'https://findit-ph.vercel.app/',
+      liveLabel: 'Visit FindIt',
+      codeUrl: null
+    },
+    gallery: []
+  },
+
+  {
     id: 'shiftgear',
     name: 'ShiftGear',
     tagline: 'A multi-page car showcase site. Browse the models, send an inquiry.',
