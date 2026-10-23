@@ -551,8 +551,11 @@
       if (event.key === 'Escape') setMenu(false);
     });
 
-    /* --- Active section highlighting --- */
-    const navLinks = $$('#nav-links a');
+    /* --- Active section highlighting ---
+       Direct children only: the mobile panel also holds a CTA and external
+       social links, and passing an absolute URL to querySelector below
+       throws. */
+    const navLinks = $$('#nav-links > a');
     const sections = navLinks
       .map(link => document.querySelector(link.getAttribute('href')))
       .filter(Boolean);

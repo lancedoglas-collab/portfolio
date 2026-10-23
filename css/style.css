@@ -353,6 +353,9 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
 .nav__actions { display: flex; align-items: center; gap: 0.6rem; }
 
+/* Only ever shown inside the mobile slide-in panel. */
+.navmenu__extra { display: none; }
+
 /* Solid call to action in the bar — the only element that asks for a reply. */
 .navcta {
   display: inline-flex;
@@ -1548,6 +1551,25 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .hero__figure { order: -1; justify-content: flex-start; }
   .photo { width: min(58%, 260px); }
 
+  /* Once the hero stacks there is nothing to the right of the photo, so the
+     card drops into the flow beneath it instead of floating off the corner.
+     .photo has a fixed 1:1 aspect ratio, so its height is set regardless of
+     content and a statically-positioned child would overflow onto the text
+     below. Releasing the ratio here and moving it to the frame keeps the
+     portrait square while letting .photo grow tall enough to hold both. */
+  .photo { aspect-ratio: auto; }
+  .photo__frame { position: relative; aspect-ratio: 1; }
+  /* Both decorations inset from .photo, which is now taller than it is wide,
+     so pin them to the square frame rather than letting them become ovals. */
+  .photo__glow { inset: -14% -14% auto; aspect-ratio: 1; }
+  .photo__ring { inset: -8px -8px auto; aspect-ratio: 1; }
+
+  .availcard {
+    position: static;
+    width: min(100%, 320px);
+    margin-top: 1.25rem;
+  }
+
   .about { grid-template-columns: 1fr; }
   .contact { grid-template-columns: 1fr; }
   .resume { grid-template-columns: 1fr; }
@@ -1563,13 +1585,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .nav__indicator { display: none; }
   /* The slide-out menu already carries a Contact link. */
   .navcta { display: none; }
-
-  /* No room to overlap the photo without covering a face. */
-  .availcard {
-    position: static;
-    width: 100%;
-    margin-top: 1.25rem;
-  }
 
   /* Slide-in panel on small screens. */
   .nav__links {
@@ -1589,17 +1604,105 @@ button { font: inherit; color: inherit; cursor: pointer; }
     overflow-y: auto;
   }
   .nav__links.is-open { transform: translateX(0); }
-  .nav__links a {
+  .nav__links > a {
     padding: 0.95rem 1.1rem;
     font-size: 1.05rem;
     border-radius: var(--r-md);
     border: 1px solid transparent;
   }
-  .nav__links a.is-active {
+  .nav__links > a.is-active {
     background: var(--accent-soft);
     border-color: var(--accent-line);
     color: var(--accent);
   }
+
+  /* Links fly in one after another once the panel opens. */
+  .nav__links.is-open > a {
+    animation: menuitem 0.42s var(--ease) both;
+  }
+  .nav__links.is-open > a:nth-child(1) { animation-delay: 0.06s; }
+  .nav__links.is-open > a:nth-child(2) { animation-delay: 0.10s; }
+  .nav__links.is-open > a:nth-child(3) { animation-delay: 0.14s; }
+  .nav__links.is-open > a:nth-child(4) { animation-delay: 0.18s; }
+  .nav__links.is-open > a:nth-child(5) { animation-delay: 0.22s; }
+  .nav__links.is-open > a:nth-child(6) { animation-delay: 0.26s; }
+  .nav__links.is-open .navmenu__extra { animation: menuitem 0.42s var(--ease) 0.3s both; }
+  @keyframes menuitem {
+    from { opacity: 0; transform: translateX(22px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
+  /* The panel ends on an action rather than trailing off after a link. */
+  .navmenu__extra {
+    display: block;
+    margin-top: 1.5rem;
+    padding-top: 1.4rem;
+    border-top: 1px solid var(--line);
+  }
+  .navmenu__cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.45rem;
+    min-height: 48px;
+    border-radius: var(--r-full);
+    background: var(--accent);
+    color: var(--on-accent);
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  .navmenu__cta svg {
+    width: 15px; height: 15px;
+    fill: none; stroke: currentColor;
+    stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round;
+  }
+  .navmenu__socials {
+    display: flex;
+    justify-content: center;
+    gap: 0.6rem;
+    margin-top: 1.1rem;
+  }
+}
+
+@media (max-width: 820px) {
+  /* --- Touch comfort ---------------------------------------------------- */
+
+  /* Removes the grey flash Android/iOS paint over every tapped link. */
+  a, button { -webkit-tap-highlight-color: transparent; }
+
+  /* Pressing something should visibly respond, since there is no hover. */
+  .btn:active, .plink:active, .filter:active,
+  .sociallink:active, .navmenu__cta:active { transform: scale(0.97); }
+
+  /* 44px is the smallest comfortable touch target. */
+  .filter { min-height: 44px; padding-inline: 1.15rem; }
+  .plink  { min-height: 44px; }
+
+  /* The filter row wrapped onto three lines and pushed the work down the
+     page. One swipeable row instead, with the edge fading to hint at more. */
+  .filters {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+    /* Full-bleed so the row can run to the screen edge and back. */
+    margin-inline: calc(var(--gutter) * -1);
+    padding-inline: var(--gutter);
+    mask-image: linear-gradient(90deg, #000 85%, transparent);
+    -webkit-mask-image: linear-gradient(90deg, #000 85%, transparent);
+  }
+  .filters::-webkit-scrollbar { display: none; }
+  .filter { flex: 0 0 auto; scroll-snap-align: start; }
+
+  /* --- Notched and rounded screens -------------------------------------- */
+  .nav__inner { padding-inline: max(var(--nav-gutter), env(safe-area-inset-left)); }
+  .nav__links { padding-right: max(1.5rem, env(safe-area-inset-right)); }
+  .totop {
+    right: max(1rem, env(safe-area-inset-right));
+    bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+  .footer { padding-bottom: max(2rem, env(safe-area-inset-bottom)); }
 }
 
 @media (max-width: 600px) {
@@ -1613,6 +1716,16 @@ button { font: inherit; color: inherit; cursor: pointer; }
 
   .statgrid { grid-template-columns: 1fr; }
   .nav__brandtext { display: none; }
+
+  /* The portrait was small enough to read as an afterthought on a phone. */
+  .photo { width: min(72%, 300px); }
+
+  /* A full-screen panel beats a narrow drawer at this width. */
+  .nav__links { width: 100%; border-left: none; }
+
+  /* Edge-to-edge cards look deliberate rather than cramped. */
+  .modal { padding: 0.75rem; }
+  .modal__panel { max-height: 90vh; }
 
   .resume__actions .btn { flex: 1 1 100%; }
   .footer__inner { flex-direction: column; align-items: flex-start; }
@@ -1636,6 +1749,11 @@ button { font: inherit; color: inherit; cursor: pointer; }
   /* Drop the drift and the pulse, but leave the card in its landed state. */
   .availcard { animation: none; opacity: 1; transform: none; }
   .availcard__dot { animation: none; }
+  /* Menu items appear immediately instead of flying in one by one. */
+  .nav__links.is-open > a,
+  .nav__links.is-open .navmenu__extra { animation: none; opacity: 1; transform: none; }
+  .btn:active, .plink:active, .filter:active,
+  .sociallink:active, .navmenu__cta:active { transform: none; }
 }
 
 @media print {
