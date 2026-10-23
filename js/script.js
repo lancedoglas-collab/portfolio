@@ -404,15 +404,21 @@
       const src = img.dataset.video;
       const video = document.createElement('video');
 
-      video.src = src;
-      video.poster = img.getAttribute('src');
+      /* Muted has to be true before the source is set: browsers decide
+         whether a video may autoplay as it starts loading, and a late
+         assignment can miss that check. Both the property and the
+         attribute, because the two paths are gated separately. */
       video.muted = true;
+      video.setAttribute('muted', '');
       video.loop = true;
       video.autoplay = true;
       /* Without this iOS Safari takes the clip fullscreen on play. */
       video.playsInline = true;
       video.setAttribute('playsinline', '');
-      video.preload = 'metadata';
+      /* 'metadata' can leave it without enough buffered to ever start. */
+      video.preload = 'auto';
+      video.poster = img.getAttribute('src');
+      video.src = src;
       video.tabIndex = -1;
       /* Decorative: the card's heading and tagline already name the project. */
       video.setAttribute('aria-hidden', 'true');
@@ -423,8 +429,23 @@
       }, { once: true });
 
       img.parentNode.replaceChild(video, img);
-      const played = video.play();
-      if (played && played.catch) played.catch(() => { /* poster stays */ });
+
+      /* Over a network the first play() often rejects because nothing is
+         buffered yet, which is why this worked locally and not deployed.
+         Try again once there is enough data, and once more if the tab was
+         in the background at load. */
+      function attempt() {
+        const played = video.play();
+        if (played && played.catch) played.catch(() => { /* poster stays */ });
+      }
+
+      attempt();
+      video.addEventListener('canplay', attempt, { once: true });
+      document.addEventListener('visibilitychange', function onVisible() {
+        if (document.visibilityState !== 'visible') return;
+        document.removeEventListener('visibilitychange', onVisible);
+        if (video.paused) attempt();
+      });
     });
   }
 
