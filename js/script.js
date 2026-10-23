@@ -847,6 +847,15 @@
 
     const status = $('#form-status');
 
+    /* The button and the note must not promise delivery the form cannot
+       make, so they describe whichever path is actually configured. */
+    if (!(CONFIG.contact || {}).accessKey) {
+      const label = form.querySelector('[data-submit-label]');
+      const note = form.querySelector('[data-form-note]');
+      if (label) label.textContent = 'Compose Email';
+      if (note) note.textContent = 'This opens your own email app with the message ready to send.';
+    }
+
     const rules = [
       { id: 'name',    label: 'Please enter your name.' },
       { id: 'email',   label: 'Please enter your email address.' },
@@ -899,25 +908,81 @@
         return;
       }
 
-      /* Static site: hand the message to the visitor's own mail client
-         rather than pretending a server received it. */
       const name = $('#f-name').value.trim();
       const email = $('#f-email').value.trim();
       const subject = $('#f-subject').value.trim();
       const message = $('#f-message').value.trim();
 
-      const body = message + '\n\n--\nFrom: ' + name + ' (' + email + ')';
-      const href = 'mailto:' + CONFIG.email +
-        '?subject=' + encodeURIComponent(subject) +
-        '&body=' + encodeURIComponent(body);
+      /* Silently drop anything that filled the honeypot. */
+      const trap = form.querySelector('[name="botcheck"]');
+      if (trap && trap.checked) return;
 
-      window.location.href = href;
+      const key = (CONFIG.contact || {}).accessKey;
 
-      if (status) {
-        status.textContent = 'Opening your email app…';
-        status.className = 'cform__status is-ok';
+      /* No key configured: hand the message to the visitor's own mail app
+         rather than pretending a server received it. */
+      if (!key) {
+        const body = message + '\n\n--\nFrom: ' + name + ' (' + email + ')';
+        window.location.href = 'mailto:' + CONFIG.email +
+          '?subject=' + encodeURIComponent(subject) +
+          '&body=' + encodeURIComponent(body);
+        setStatus('Opening your email app…', 'is-ok');
+        return;
       }
+
+      setBusy(true);
+      setStatus('Sending…', '');
+
+      fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: key,
+          name: name,
+          email: email,
+          subject: subject,
+          message: message,
+          from_name: name,
+          /* Replying to the notification reaches the sender, not yourself. */
+          replyto: email
+        })
+      })
+        .then(response => response.json().catch(() => ({})))
+        .then(result => {
+          if (!result || result.success !== true) throw new Error('rejected');
+          form.reset();
+          setStatus('Thanks — your message is on its way. I will reply by email.', 'is-ok');
+        })
+        .catch(() => {
+          /* Offer the mail app instead rather than losing what they wrote. */
+          const body = message + '\n\n--\nFrom: ' + name + ' (' + email + ')';
+          const href = 'mailto:' + CONFIG.email +
+            '?subject=' + encodeURIComponent(subject) +
+            '&body=' + encodeURIComponent(body);
+          setStatus(
+            'That did not go through. You can email me directly instead: ' +
+            CONFIG.email, 'is-bad'
+          );
+          window.location.href = href;
+        })
+        .then(() => setBusy(false));
     });
+
+    function setStatus(text, cls) {
+      if (!status) return;
+      status.textContent = text;
+      status.className = 'cform__status' + (cls ? ' ' + cls : '');
+    }
+
+    /** Stops double submissions and shows the request is in flight. */
+    function setBusy(busy) {
+      const button = form.querySelector('[data-submit]');
+      const label = form.querySelector('[data-submit-label]');
+      if (!button) return;
+      button.disabled = busy;
+      button.setAttribute('aria-busy', String(busy));
+      if (label) label.textContent = busy ? 'Sending…' : 'Send Message';
+    }
   }
 
   /* =========================================================================

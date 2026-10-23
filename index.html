@@ -362,13 +362,17 @@
             <p class="field__error" id="err-message" aria-live="polite"></p>
           </div>
 
-          <button class="btn btn--primary btn--full" type="submit">
-            Compose Email
+          <!-- Honeypot: invisible to people, irresistible to bots. Anything
+               that fills it in gets dropped. -->
+          <input class="cform__hp" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+          <button class="btn btn--primary btn--full" type="submit" data-submit>
+            <span data-submit-label>Send Message</span>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
           </button>
 
-          <p class="cform__note">
-            This opens your own email app with the message ready to send.
+          <p class="cform__note" data-form-note>
+            Your message goes straight to my inbox.
           </p>
           <p class="cform__status" id="form-status" role="status" aria-live="polite"></p>
         </form>

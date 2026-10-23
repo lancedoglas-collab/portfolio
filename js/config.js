@@ -205,8 +205,16 @@ const CONFIG = {
     }
   ],
 
-  /* --- Contact section copy ---------------------------------------------- */
+  /* --- Contact section copy ----------------------------------------------
+     accessKey turns the form into one that actually delivers. Get a free
+     key at https://web3forms.com (enter your email, it is sent to you) and
+     paste it below. Left null, the form falls back to opening the
+     visitor's own mail app, which many people never complete.
+
+     The key is safe in public code: it only allows sending to the address
+     it was issued for. */
   contact: {
+    accessKey: 'fa7417fc-112d-42b7-87d7-1d9e7654698e',
     heading: 'Let’s build something',
     blurb:
       'I am currently looking for internship opportunities, and I am also ' +
