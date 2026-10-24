@@ -126,6 +126,46 @@ const PROJECTS = [
   },
 
   {
+    id: 'evaluate-cec',
+    name: 'Evaluate CEC',
+    tagline: 'Teacher evaluations for Cebu Eastern College, with sentiment analysis on every comment.',
+    description: [
+      'A web platform that replaces the paper teacher-evaluation process at ' +
+        'Cebu Eastern College. Students register with their program, year ' +
+        'level and section, then see only the teachers assigned to them, ' +
+        'rate each one out of five stars and leave an optional comment, ' +
+        'anonymously if they prefer.',
+      'Each comment is run through TextBlob for sentiment and keywords, and ' +
+        'spam or inappropriate comments are filtered out before they reach ' +
+        'anyone. Device fingerprinting limits each device to one evaluation ' +
+        'per teacher, and afterwards students can see the overall rating and ' +
+        'anonymised feedback. Administrators get a live dashboard of ' +
+        'top-rated teachers, program averages and sentiment breakdowns, and ' +
+        'manage the teacher list from the same place.',
+      'I built the backend and helped with the interface design.'
+    ],
+    category: 'Web Applications',
+    featured: true,
+    year: '2026',
+    role: 'Backend developer, with a hand in the interface design.',
+    /* TODO: Django is inferred from the site's /accounts/login/ and
+       /static/ URLs, and TextBlob is named on the page. Add the database
+       once confirmed (e.g. PostgreSQL / Supabase), and correct Django if
+       it turns out to be something else. */
+    tech: ['Python', 'Django', 'TextBlob', 'HTML5', 'CSS3', 'JavaScript', 'Vercel'],
+    video: 'assets/video/evaluate-cec.mp4',
+    image: 'assets/images/projects/evaluate-cec.jpg',
+    imageAlt: 'Evaluate CEC home page: “Smarter Teacher Evaluations for Cebu Eastern College” beside a sample star rating and sentiment card',
+    mockup: 'browser',
+    links: {
+      liveUrl: 'https://evaluate-cec.vercel.app/',
+      liveLabel: 'Visit Evaluate CEC',
+      codeUrl: null
+    },
+    gallery: []
+  },
+
+  {
     id: 'shiftgear',
     name: 'ShiftGear',
     tagline: 'A multi-page car showcase site. Browse the models, send an inquiry.',
