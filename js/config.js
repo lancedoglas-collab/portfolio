@@ -224,6 +224,10 @@ const CONFIG = {
 
   /* --- Footer ------------------------------------------------------------- */
   footer: {
-    tagline: 'Built from scratch with HTML, CSS and JavaScript. No frameworks.'
+    /* The closing line above the footer's contact details. Keep it short:
+       it is set at display size across two lines. */
+    headline: 'Have something in mind? Let’s build it.',
+    /* Small line beside the copyright. null removes it. */
+    tagline: null
   }
 };

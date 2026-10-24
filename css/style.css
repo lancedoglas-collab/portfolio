@@ -73,7 +73,7 @@
 
   /* The navigation bar deliberately breaks out of --wrap so it spans wider
      than the page content. Its own gutter keeps it off the screen edge. */
-  --nav-wrap:   1560px;
+  --nav-wrap:   1340px;
   --nav-gutter: clamp(1rem, 3vw, 2.75rem);
   --section-y: clamp(4.5rem, 11vw, 9rem);
   --r-sm: 8px;
@@ -1429,18 +1429,102 @@ button { font: inherit; color: inherit; cursor: pointer; }
 /* ---------------------------------------------------------------------------
    14. FOOTER & BACK-TO-TOP
    ------------------------------------------------------------------------ */
-.footer { border-top: 1px solid var(--line); padding-block: 3rem; background: var(--bg); }
-.footer__inner {
+.footer {
+  border-top: 1px solid var(--line);
+  padding-block: clamp(3.5rem, 7vw, 5.5rem) 2.5rem;
+  background: var(--bg);
+}
+
+.footer__top {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr);
+  gap: clamp(2.5rem, 6vw, 5rem);
+  align-items: start;
+}
+
+.footer__eyebrow {
+  margin: 0 0 1rem;
+  font-family: var(--font-mono);
+  font-size: var(--fs-tiny);
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+.footer__headline {
+  margin: 0;
+  max-width: 16ch;
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4.6vw, 3.1rem);
+  font-weight: 600;
+  letter-spacing: -0.03em;
+  line-height: 1.08;
+}
+
+/* A text link with a rule that draws itself under the words on hover. */
+.footer__cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 1.8rem;
+  padding-bottom: 0.35rem;
+  font-size: var(--fs-lead);
+  font-weight: 600;
+  color: var(--text);
+}
+.footer__cta::after {
+  content: '';
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 1px;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--t-med) var(--ease);
+}
+.footer__cta:hover { color: var(--accent); }
+.footer__cta:hover::after { transform: scaleX(1); }
+.footer__cta svg {
+  width: 16px; height: 16px;
+  fill: none; stroke: currentColor;
+  stroke-width: 2.1; stroke-linecap: round; stroke-linejoin: round;
+  transition: transform var(--t-fast) var(--ease);
+}
+.footer__cta:hover svg { transform: translate(3px, -3px); }
+
+/* --- Contact column --- */
+.footer__details { display: grid; gap: 0.9rem; justify-items: start; }
+.footer__line {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  font-size: var(--fs-small);
+  color: var(--text-muted);
+  overflow-wrap: anywhere;
+  transition: color var(--t-fast) var(--ease);
+}
+.footer__line:hover { color: var(--accent); }
+.footer__line svg {
+  flex-shrink: 0;
+  width: 17px; height: 17px;
+  fill: none; stroke: currentColor;
+  stroke-width: 1.6; stroke-linecap: round; stroke-linejoin: round;
+}
+.footer__socials { display: flex; gap: 0.55rem; margin-top: 0.6rem; }
+
+/* --- Bottom rule --- */
+.footer__bottom {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
   justify-content: space-between;
-  gap: 1.5rem;
+  gap: 0.75rem 1.5rem;
+  margin-top: clamp(2.5rem, 5vw, 4rem);
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line);
 }
-.footer__name { margin: 0; font-family: var(--font-display); font-size: 1.15rem; font-weight: 600; }
-.footer__tag { margin: 0.3rem 0 0; font-size: var(--fs-small); color: var(--text-muted); }
-.footer__socials { display: flex; gap: 0.55rem; }
 .footer__copy { margin: 0; font-size: var(--fs-tiny); color: var(--text-faint); }
+.footer__tag { margin: 0; font-size: var(--fs-tiny); color: var(--text-faint); }
 
 .totop {
   position: fixed;
@@ -1589,6 +1673,8 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .about { grid-template-columns: 1fr; }
   .contact { grid-template-columns: 1fr; }
   .resume { grid-template-columns: 1fr; }
+  .footer__top { grid-template-columns: 1fr; }
+  .footer__headline { max-width: 22ch; }
 
   .fproject { grid-template-columns: 1fr; }
   /* Reset the alternating order once stacked: image always first. */
@@ -1796,7 +1882,6 @@ button { font: inherit; color: inherit; cursor: pointer; }
   .modal__panel { max-height: 90vh; }
 
   .resume__actions .btn { flex: 1 1 100%; }
-  .footer__inner { flex-direction: column; align-items: flex-start; }
 }
 
 /* ---------------------------------------------------------------------------

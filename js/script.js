@@ -109,8 +109,14 @@
     const intro = $('[data-hero-intro]');
     if (intro) intro.innerHTML = emphasise(CONFIG.intro || '');
 
+    /* Removed rather than left empty, so the footer's bottom row does not
+       reserve space for a line that is not there. */
     const tagline = $('[data-footer-tagline]');
-    if (tagline && CONFIG.footer) tagline.textContent = CONFIG.footer.tagline || '';
+    if (tagline) {
+      const text = (CONFIG.footer || {}).tagline;
+      if (text) tagline.textContent = text;
+      else tagline.remove();
+    }
 
     const mono = $('[data-photo-mono]');
     if (mono) mono.textContent = CONFIG.initials;
@@ -760,6 +766,21 @@
       apply(next);
       try { localStorage.setItem('portfolio-theme', next); } catch (e) { /* private mode */ }
     });
+
+    /* Follow the device if it switches while the page is open, but never
+       override a visitor who has picked a theme here themselves. */
+    if (window.matchMedia) {
+      const scheme = window.matchMedia('(prefers-color-scheme: light)');
+      const onSchemeChange = event => {
+        let chosen = null;
+        try { chosen = localStorage.getItem('portfolio-theme'); } catch (e) { /* private mode */ }
+        if (chosen === 'light' || chosen === 'dark') return;
+        apply(event.matches ? 'light' : 'dark');
+      };
+
+      if (scheme.addEventListener) scheme.addEventListener('change', onSchemeChange);
+      else if (scheme.addListener) scheme.addListener(onSchemeChange);
+    }
   }
 
   /* =========================================================================
@@ -1022,6 +1043,24 @@
   function initFooter() {
     const year = $('#year');
     if (year) year.textContent = new Date().getFullYear();
+
+    const headline = $('[data-footer-headline]');
+    if (headline) headline.textContent = (CONFIG.footer || {}).headline || '';
+
+    /* The footer repeats the contact details so the page ends on a way to
+       reach you rather than on a copyright line. Both are removed when not
+       configured, same as everywhere else. */
+    const mail = $('#footer-email');
+    if (mail) {
+      if (CONFIG.email) mail.href = 'mailto:' + CONFIG.email;
+      else mail.remove();
+    }
+
+    const phone = $('#footer-phone');
+    if (phone && CONFIG.phone) {
+      phone.hidden = false;
+      phone.href = 'tel:' + CONFIG.phone.replace(/[^\d+]/g, '');
+    }
   }
 
   /* =========================================================================
