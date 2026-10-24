@@ -147,7 +147,7 @@ const CONFIG = {
     },
     {
       category: 'Tools & Platforms',
-      items: ['Git', 'Vercel', 'VS Code', 'Microsoft Office']
+      items: ['Git', 'Vercel', 'VS Code', 'Claude Code', 'Microsoft Office']
     }
   ],
 
