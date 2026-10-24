@@ -869,10 +869,13 @@
     if (blurb && contact.blurb) blurb.textContent = contact.blurb;
 
     const mail = $('#mail-link');
-    const emailValue = $('[data-email]');
+    /* Every match, not the first: the footer repeats these details, and
+       querySelector stopped at the Contact section's copy, so the footer's
+       email and phone rendered as icons with no text. */
+    const emailValues = $$('[data-email]');
 
     if (CONFIG.email) {
-      if (emailValue) emailValue.textContent = CONFIG.email;
+      emailValues.forEach(el => { el.textContent = CONFIG.email; });
       if (mail) mail.href = 'mailto:' + CONFIG.email;
     } else if (mail) {
       mail.hidden = true;
@@ -880,11 +883,11 @@
 
     /* Phone is optional — the card stays hidden when CONFIG.phone is null. */
     const phoneLink = $('#phone-link');
-    const phoneValue = $('[data-phone]');
+    const phoneValues = $$('[data-phone]');
     if (CONFIG.phone && phoneLink) {
       phoneLink.hidden = false;
       phoneLink.href = 'tel:' + CONFIG.phone.replace(/[^\d+]/g, '');
-      if (phoneValue) phoneValue.textContent = CONFIG.phone;
+      phoneValues.forEach(el => { el.textContent = CONFIG.phone; });
     }
 
     initContactForm();
