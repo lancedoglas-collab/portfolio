@@ -1493,11 +1493,20 @@ button { font: inherit; color: inherit; cursor: pointer; }
 .footer__cta:hover svg { transform: translate(3px, -3px); }
 
 /* --- Contact column --- */
-.footer__details { display: grid; gap: 0.9rem; justify-items: start; }
+.footer__details {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.75rem;
+}
+/* Socials take their own line under the two contact lines. */
+.footer__details .footer__socials { flex-basis: 100%; }
 .footer__line {
   display: inline-flex;
   align-items: center;
   gap: 0.65rem;
+  /* Lets a long address wrap inside the row instead of pushing out of it. */
+  min-width: 0;
   font-size: var(--fs-small);
   color: var(--text-muted);
   overflow-wrap: anywhere;
