@@ -214,6 +214,7 @@ const PROJECTS = [
     year: null,
     role: 'Front-end developer: app screens, interface and release testing.',
     tech: ['Mobile Development', 'Android', 'Google Play'],
+    video: 'assets/video/zoki.mp4',
     image: 'assets/images/projects/zoki.jpg',
     imageAlt: 'Zoki Kasal Kain & Beauty welcome screen, offering a Customer or Vendor sign-in',
     mockup: 'phone',
