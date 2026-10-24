@@ -390,12 +390,13 @@
     observeReveals();
   }
 
+  let videoObserver = null;
+
   /**
-   * Replaces a project's still with a muted looping clip, but only on a
-   * screen wide enough to be worth the bytes and only when motion is
-   * welcome. The poster is the same image, so the card looks identical
-   * until the video has enough data to play, and identical forever if it
-   * never loads.
+   * Replaces a project's still with a muted looping clip, wherever motion
+   * is welcome and the connection can carry it. The poster is the same
+   * image, so the card looks identical until the video has data to play,
+   * and identical forever if it never loads.
    */
   function upgradeVideos() {
     if (prefersReducedMotion) return;
@@ -407,6 +408,9 @@
                  navigator.mozConnection ||
                  navigator.webkitConnection;
     if (conn && (conn.saveData || /(^|-)2g$/.test(conn.effectiveType || ''))) return;
+
+    /* Filtering rebuilds the cards, so drop the previous elements. */
+    if (videoObserver) videoObserver.disconnect();
 
     $$('img[data-video]').forEach(img => {
       const src = img.dataset.video;
@@ -423,10 +427,11 @@
       /* Without this iOS Safari takes the clip fullscreen on play. */
       video.playsInline = true;
       video.setAttribute('playsinline', '');
-      /* 'metadata' can leave it without enough buffered to ever start. */
       video.preload = 'auto';
       video.poster = img.getAttribute('src');
-      video.src = src;
+      /* src is attached on first approach, not here: five clips is 2.3 MB,
+         and nobody should pay for the four they have not scrolled to. */
+      video.dataset.src = src;
       video.tabIndex = -1;
       /* Decorative: the card's heading and tagline already name the project. */
       video.setAttribute('aria-hidden', 'true');
@@ -437,24 +442,50 @@
       }, { once: true });
 
       img.parentNode.replaceChild(video, img);
-
-      /* Over a network the first play() often rejects because nothing is
-         buffered yet, which is why this worked locally and not deployed.
-         Try again once there is enough data, and once more if the tab was
-         in the background at load. */
-      function attempt() {
-        const played = video.play();
-        if (played && played.catch) played.catch(() => { /* poster stays */ });
-      }
-
-      attempt();
-      video.addEventListener('canplay', attempt, { once: true });
-      document.addEventListener('visibilitychange', function onVisible() {
-        if (document.visibilityState !== 'visible') return;
-        document.removeEventListener('visibilitychange', onVisible);
-        if (video.paused) attempt();
-      });
+      watchVideo(video);
     });
+  }
+
+  /**
+   * Plays a clip while it is on screen and pauses it when it is not.
+   *
+   * Calling play() for every card at load is what broke this on phones:
+   * four of the five are far below the fold, and mobile browsers refuse or
+   * immediately pause video that is not visible. Nothing then retried when
+   * the visitor scrolled down, so those cards sat on their posters. Tying
+   * playback to visibility also means a phone only ever decodes the one
+   * clip being looked at.
+   */
+  function watchVideo(video) {
+    function attempt() {
+      /* The source is attached the first time the card comes near. */
+      if (!video.src && video.dataset.src) {
+        video.src = video.dataset.src;
+        /* Nothing is buffered yet, so play() here usually rejects; the
+           canplay listener below picks it up once there is data. */
+        video.addEventListener('canplay', attempt, { once: true });
+      }
+      const played = video.play();
+      if (played && played.catch) played.catch(() => { /* poster stays */ });
+    }
+
+    if (!('IntersectionObserver' in window)) { attempt(); return; }
+
+    if (!videoObserver) {
+      videoObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+          const el = entry.target;
+          if (entry.isIntersecting) {
+            if (el.paused) el.playAttempt();
+          } else if (!el.paused) {
+            el.pause();
+          }
+        });
+      }, { threshold: 0.25, rootMargin: '150px 0px' });
+    }
+
+    video.playAttempt = attempt;
+    videoObserver.observe(video);
   }
 
   /** Builds filter buttons for categories that actually contain projects. */
